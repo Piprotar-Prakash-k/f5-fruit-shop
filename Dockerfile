@@ -3,7 +3,8 @@ FROM php:8.2-apache
 RUN apt-get update && apt-get install -y \
     zip unzip curl git nodejs npm \
     libzip-dev libicu-dev libxml2-dev \
-    && docker-php-ext-install pdo_mysql zip intl mbstring xml
+    libonig-dev \
+    && docker-php-ext-install pdo_mysql zip intl mbstring
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
