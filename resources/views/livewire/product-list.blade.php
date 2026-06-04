@@ -10,12 +10,12 @@
         <span x-text="message"></span>
     </div>
     <!-- Success Message -->
-@if(session('success'))
+    @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
         🎉 {{ session('success') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
-@endif
+    @endif
 
     <!-- Navbar -->
     <nav class="navbar navbar-dark bg-success">
@@ -43,8 +43,8 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow">
                     @if($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}"
-                        class="card-img-top"
+                    <img src="{{ $product->image_url }}"
+                     class="card-img-top"
                         style="height: 200px; object-fit: cover;">
                     @endif
                     <div class="card-body">
