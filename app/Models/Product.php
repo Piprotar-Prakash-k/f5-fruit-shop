@@ -19,4 +19,16 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) return null;
+        
+        if (str_starts_with($this->image, 'http')) {
+            return $this->image;
+        }
+        
+        $publicId = pathinfo($this->image, PATHINFO_FILENAME);
+        return "https://res.cloudinary.com/doolftkw6/image/upload/{$publicId}";
+    }
 }
