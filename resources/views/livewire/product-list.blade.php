@@ -9,7 +9,7 @@
         class="alert alert-success shadow">
         <span x-text="message"></span>
     </div>
-    <!-- Success Message -->
+
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
         🎉 {{ session('success') }}
@@ -18,54 +18,57 @@
     @endif
 
     <!-- Navbar -->
-<nav class="navbar navbar-expand-md navbar-dark bg-success">        <div class="container">
-            <a class="navbar-brand">🍎 Fruit Shop</a>
-            <div>
-                @auth
-                <span class="text-white me-3">Welcome {{ auth()->user()->name }}!</span>
-                <a href="/cart" class="btn btn-warning me-2">🛒 Go to Cart</a>
-                <a href="/customer/logout" class="btn btn-outline-light">Logout</a>
-                @else
-                <a href="/customer/login" class="btn btn-outline-light me-2">Login</a>
-                <a href="/customer/register" class="btn btn-light">Register</a>
-                @endauth
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-5">🍎 Fruit Shop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="ms-auto d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2 py-2 py-lg-0">
+                    @auth
+                        <span class="text-white">Welcome {{ auth()->user()->name }}!</span>
+                        <a href="/cart" class="btn btn-warning btn-sm">🛒 Cart</a>
+                        <a href="/customer/logout" class="btn btn-outline-light btn-sm">Logout</a>
+                    @else
+                        <a href="/customer/login" class="btn btn-outline-light btn-sm">Login</a>
+                        <a href="/customer/register" class="btn btn-light btn-sm">Register</a>
+                    @endauth
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Products -->
-    <div class="container mt-4">
-        <h2 class="mb-4">Our Fresh Fruits</h2>
+    <div class="container mt-4 px-3">
+        <h2 class="mb-4 fs-4 fw-bold">🍓 Our Fresh Fruits</h2>
 
-        <div class="row">
+        <div class="row g-3">
             @foreach($products as $product)
-<div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card h-100 shadow">
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="card h-100 shadow-sm">
                     @if($product->image)
                     <img src="{{ $product->image_url }}"
-                     class="card-img-top"
-style="height: 150px; object-fit: cover;"                    @endif
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $product->name }}</h5>
-                        <p class="text-muted">{{ $product->category->name ?? 'No Category' }}</p>
-                        <h4 class="text-success">₹{{ $product->price }}</h4>
-                        <p>Available: {{ $product->quantity }}</p>
+                        class="card-img-top"
+                        style="height: 150px; object-fit: cover;">
+                    @endif
+                    <div class="card-body p-2 p-md-3">
+                        <h6 class="card-title fw-bold mb-1" style="font-size: 0.9rem;">{{ $product->name }}</h6>
+                        <p class="text-muted mb-1" style="font-size: 0.75rem;">{{ $product->category->name ?? 'No Category' }}</p>
+                        <h5 class="text-success fw-bold mb-1" style="font-size: 0.95rem;">₹{{ $product->price }}</h5>
+                        <p class="mb-2" style="font-size: 0.75rem;">Stock: {{ $product->quantity }}</p>
 
-                        <!-- Always show Add to Cart button -->
-                        <!-- Row 1: ➖ 1 ➕ -->
                         @if(isset($quantities[$product->id]) && $quantities[$product->id] > 0)
-                        <div class="d-flex align-items-center justify-content-center gap-2 mt-2">
-                            <button wire:click="decrement({{ $product->id }})" class="btn btn-danger btn-sm px-3">−</button>
-                            <span class="fw-bold fs-6">{{ $quantities[$product->id] }}</span>
-                            <button wire:click="increment({{ $product->id }})" class="btn btn-success btn-sm px-3">+</button>
+                        <div class="d-flex align-items-center justify-content-center gap-1 mb-2">
+                            <button wire:click="decrement({{ $product->id }})" class="btn btn-danger btn-sm px-2 py-1" style="font-size: 0.8rem;">−</button>
+                            <span class="fw-bold">{{ $quantities[$product->id] }}</span>
+                            <button wire:click="increment({{ $product->id }})" class="btn btn-success btn-sm px-2 py-1" style="font-size: 0.8rem;">+</button>
                         </div>
                         @endif
 
-                        <!-- Row 2: Add to Cart button -->
-                        <button wire:click="addToCart({{ $product->id }})" class="btn btn-success w-100 mt-2">
+                        <button wire:click="addToCart({{ $product->id }})" class="btn btn-success w-100 btn-sm" style="font-size: 0.8rem;">
                             Add to Cart 🛒
                         </button>
-
                     </div>
                 </div>
             </div>
