@@ -33,7 +33,6 @@ class ProductForm
                 FileUpload::make('image')
                     ->image()
                     ->disk('cloudinary')
-                    ->directory('products')
                     ->visibility('public')
                     ->columnSpanFull(),
             ]);
