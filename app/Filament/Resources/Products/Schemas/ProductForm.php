@@ -32,7 +32,7 @@ class ProductForm
 
                 FileUpload::make('image')
                     ->image()
-                    ->disk('public')
+                    ->disk('cloudinary')
                     ->directory('products')
                     ->visibility('public')
                     ->columnSpanFull(),
