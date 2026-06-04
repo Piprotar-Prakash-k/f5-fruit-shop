@@ -29,11 +29,16 @@ class ProductForm
                     ->required(),
                 TextInput::make('quality')
                     ->required(),
-
                 FileUpload::make('image')
                     ->image()
                     ->disk('cloudinary')
                     ->visibility('public')
+                    ->saveUploadedFileUsing(function ($file) {
+                        $result = cloudinary()->uploadApi()->upload($file->getRealPath(), [
+                            'folder' => 'products',
+                        ]);
+                        return $result['secure_url'];
+                    })
                     ->columnSpanFull(),
             ]);
     }
