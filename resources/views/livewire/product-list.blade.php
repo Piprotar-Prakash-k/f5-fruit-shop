@@ -18,8 +18,7 @@
     @endif
 
     <!-- Navbar -->
-    <nav class="navbar navbar-dark bg-success">
-        <div class="container">
+<nav class="navbar navbar-expand-md navbar-dark bg-success">        <div class="container">
             <a class="navbar-brand">🍎 Fruit Shop</a>
             <div>
                 @auth
@@ -40,13 +39,12 @@
 
         <div class="row">
             @foreach($products as $product)
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow">
+<div class="col-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card h-100 shadow">
                     @if($product->image)
                     <img src="{{ $product->image_url }}"
                      class="card-img-top"
-                        style="height: 200px; object-fit: cover;">
-                    @endif
+style="height: 150px; object-fit: cover;"                    @endif
                     <div class="card-body">
                         <h5 class="card-title">{{ $product->name }}</h5>
                         <p class="text-muted">{{ $product->category->name ?? 'No Category' }}</p>
