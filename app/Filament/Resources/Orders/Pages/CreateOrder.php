@@ -3,9 +3,12 @@
 namespace App\Filament\Resources\Orders\Pages;
 
 use App\Filament\Resources\Orders\OrderResource;
+use App\Mail\OrderConfirmation;
 use App\Models\Product;
+use App\Models\User;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Mail;
 
 class CreateOrder extends CreateRecord
 {
@@ -15,6 +18,7 @@ class CreateOrder extends CreateRecord
     {
         return $this->getResource()::getUrl('index');
     }
+
     protected function beforeCreate(): void
     {
         $data = $this->data;
@@ -30,6 +34,7 @@ class CreateOrder extends CreateRecord
             $this->halt();
         }
     }
+
     protected function afterCreate(): void
     {
         $order = $this->record;
@@ -38,6 +43,14 @@ class CreateOrder extends CreateRecord
         if ($product) {
             $product->quantity -= $order->quantity;
             $product->save();
+        }
+
+        // Send confirmation email
+        $user = User::where('name', $order->customer_name)->first();
+
+        if ($user) {
+            Mail::to($user->email)
+                ->send(new OrderConfirmation($order));
         }
     }
 }
