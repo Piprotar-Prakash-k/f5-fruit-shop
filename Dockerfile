@@ -12,6 +12,10 @@ WORKDIR /var/www/html
 
 COPY . .
 
+RUN cp .env.example .env \
+    && sed -i 's/^SESSION_DRIVER=.*/SESSION_DRIVER=database/' .env \
+    && sed -i 's/^CACHE_STORE=.*/CACHE_STORE=database/' .env
+
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
 RUN npm install && npm run build
