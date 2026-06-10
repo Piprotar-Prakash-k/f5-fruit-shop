@@ -30,9 +30,12 @@ class CustomerRegister extends Component
             'password' => Hash::make($this->password),
         ]);
 
+        // Send verification email
+        $user->sendEmailVerificationNotification();
+
         Auth::login($user);
 
-        return redirect('/');
+        return redirect('/verify-email');
     }
 
     public function render()

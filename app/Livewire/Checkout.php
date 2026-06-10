@@ -2,12 +2,14 @@
 
 namespace App\Livewire;
 
+use App\Mail\OrderConfirmation;
 use App\Models\Cart as CartModel;
 use App\Models\Order;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 #[Layout('components.layouts.app')]
 class Checkout extends Component
@@ -46,7 +48,7 @@ class Checkout extends Component
         foreach ($cartItems as $item) {
             $product = Product::find($item->product_id);
 
-            Order::create([
+            $order = Order::create([
                 'customer_name'  => $this->customer_name,
                 'phone'          => $this->phone,
                 'address'        => $this->address,
@@ -59,6 +61,10 @@ class Checkout extends Component
 
             $product->quantity -= $item->quantity;
             $product->save();
+
+            // Send confirmation email
+            Mail::to(Auth::user()->email)
+                ->send(new OrderConfirmation($order));
         }
 
         CartModel::where('user_id', Auth::id())->delete();
