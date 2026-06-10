@@ -18,6 +18,9 @@ RUN npm install && npm run build
 
 RUN chown -R www-data:www-data /var/www/html/storage
 
+COPY start.sh /var/www/html/start.sh
+RUN chmod +x /var/www/html/start.sh
+
 EXPOSE 8080
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+CMD ["bash", "start.sh"]
